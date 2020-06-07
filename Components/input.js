@@ -12,11 +12,13 @@ const Input = props =>{
 		
 		<View style={styles.TextInputContainer}>
 			<TextInput
+				{...props}
 				 placeholder={props.placeholder}
-				 value={props.value}
+				 
 				 onChangeText={props.onChange}
 				 autoCapitalize={props.autoCapitalize}
 				 blurOnSubmit={true}
+				 keyboardType={props.keyboard}
 
 			/>
 		</View>

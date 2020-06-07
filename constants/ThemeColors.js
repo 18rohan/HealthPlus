@@ -1,5 +1,5 @@
 export default{
-	MedBlue:'#0000FF',
+	MedBlue:'#4600FF',
 	HomeScreenText:'white',
 	PurpleButton:'#ff7404',
 	RedButton:'#E94574',

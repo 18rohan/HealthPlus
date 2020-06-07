@@ -12,12 +12,14 @@ import {
 } from "react-native";
 import Colors from "../constants/ThemeColors";
 import HomeScreenCard from "../Components/HomeScreenCard";
+import {useSelector} from 'react-redux';
 import {PATIENTS} from "../Data/dummyData";
 
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
 
 
 const HomeScreen = (props) => {
+	const Appointments = useSelector(state => state.appointment.appointments);
 	
 	const renderCard = (itemData) => {
 	
@@ -40,7 +42,9 @@ const HomeScreen = (props) => {
 					<Text style={styles.Titletext}>Rohan</Text>
 				</View>
 
-				<View style={styles.ButtonsContainer}>
+		
+			</View>
+					<View style={styles.ButtonsContainer}>
 					<TouchableOpacity
 						style={styles.floatingButtons1}
 						activeOpacity={0.8}
@@ -53,8 +57,8 @@ const HomeScreen = (props) => {
 							size={45}
 							color="white"
 						/>
-						<View style={{ marginTop: 3 }}>
-							<Text style={styles.Buttontext}>Bookings</Text>
+						<View style={{ marginTop: 0 }}>
+							<Text style={styles.Buttontext}></Text>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -63,11 +67,11 @@ const HomeScreen = (props) => {
 					>
 						<FontAwesome5
 							name="briefcase-medical"
-							size={38}
+							size={40}
 							color="white"
 						/>
-						<View style={{ marginTop: 10 }}>
-							<Text style={styles.Buttontext}>Doctor</Text>
+						<View style={{ marginTop: 0 }}>
+							<Text style={styles.Buttontext}></Text>
 						</View>
 					</TouchableOpacity>
 					<TouchableOpacity
@@ -76,32 +80,36 @@ const HomeScreen = (props) => {
 					>
 						<FontAwesome5
 							name="money-check"
-							size={35}
+							size={39}
 							color="white"
 						/>
-						<View style={{ marginTop: 10 }}>
-							<Text style={styles.Buttontext}>Fees</Text>
+						<View style={{ marginTop: 0 }}>
+							<Text style={styles.Buttontext}></Text>
 						</View>
 					</TouchableOpacity>
 				</View>
-			</View>
-			
 
 			<View style={styles.InfoContainer}>
-						<View style={styles.PatientsNumber}>
-						<Text style={{fontSize:20, color:'white', fontWeight:'400'}}>Today Patients</Text>
+						<TouchableOpacity style={styles.PatientsNumber} onPress={()=>{
+							props.navigation.navigate('appointmentsList');
+						}} >
+						<View style={styles.iconContainer}>
+						
 							<FontAwesome5 name="users" size={35} color='white' />
-							<Text style={{fontSize:25, color:'white'}}>{PATIENTS.length} </Text>
-						</View>
+							</View>
+							<Text style={{fontSize:20, color:'white'}}>{Appointments.length} Patients </Text>
+						
+						</TouchableOpacity>
 						<View style={styles.TotalCollection}>
-						<Text style={{fontSize:18, color:'white', fontWeight:'400'}}>Today Collection</Text>
+						
 							<FontAwesome5
 							name="money-check"
 							size={35}
 							color="white"
 						/>
-							<Text style={{fontSize:20, color:'white'}}>Rs.11,000 </Text>
+							<Text style={{fontSize:19, color:'white'}}>Rs.11,000 </Text>
 						</View>
+
 						
 				</View>
 			
@@ -165,33 +173,33 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	floatingButtons1: {
-		width: 100,
-		height: 100,
+		width: 80,
+		height: 80,
 		justifyContent: "center",
 
 		alignItems: "center",
 		borderRadius: 50,
-
+		paddingTop:8,
 		backgroundColor: Colors.PurpleButton,
 	},
 	floatingButtons2: {
-		width: 100,
-		height: 100,
+		width: 80,
+		height: 80,
 		justifyContent: "center",
 		marginLeft: 25,
 		alignItems: "center",
 		borderRadius: 50,
-
+		paddingTop:10,
 		backgroundColor: Colors.RedButton,
 	},
 	floatingButtons3: {
-		width: 100,
-		height: 100,
+		width: 80,
+		height: 80,
 		justifyContent: "center",
 		marginLeft: 25,
 		alignItems: "center",
 		borderRadius: 50,
-
+		paddingTop:10,
 		backgroundColor: Colors.GreenButton,
 	},
 	Buttontext: {
@@ -202,8 +210,8 @@ const styles = StyleSheet.create({
 	ButtonsContainer: {
 		flexDirection: "row",
 		justifyContent: "space-around",
-
-		marginBottom: 5,
+		padding:10,
+		backgroundColor: "white",
 	},
 	background: {
 		flex: 1,
@@ -254,6 +262,9 @@ const styles = StyleSheet.create({
 		backgroundColor:Colors.MedBlue,
 		marginLeft:50,
 		justifyContent:'space-around'
+	},
+	iconContainer:{
+		marginBottom:2,
 	},
 });
 
