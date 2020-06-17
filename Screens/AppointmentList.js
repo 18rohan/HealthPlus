@@ -39,6 +39,7 @@ const renderSingleAppointment = itemData => {
 const AppointmentsList = props =>{
 	const dispatch = useDispatch();
 	const availableAppointments = useSelector(state => state.appointment.appointments);
+	
 	console.log("AppointMent list");
 	console.log(availableAppointments);
 	if (availableAppointments.length === 0) {
@@ -99,8 +100,8 @@ const styles = StyleSheet.create({
 		
 		flexDirection:'row',
 		
-		width:420,
-		height:310,
+		width:450,
+		height:Platform.OS === 'ios' ? 310 : 270,
 		
 
 		backgroundColor:Colors.MedBlue,
@@ -161,6 +162,7 @@ const styles = StyleSheet.create({
 		flex:1,
 		justifyContent:'center',
 		width:260,
+		marginBottom:Platform.OS === 'ios' ? 0 : 83,
 		height:300,
 
 	},

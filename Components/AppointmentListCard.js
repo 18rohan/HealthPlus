@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		color: Colors.BackgroundBlue,
 	},
 	textTopTime: {
-		fontSize: 20,
+		fontSize: 15,
 		fontWeight: "200",
 		color: 'red',
 	},

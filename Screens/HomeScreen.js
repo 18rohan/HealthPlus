@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useCallback, useEffect } from "react";
 import {
 	StyleSheet,
 	View,
@@ -9,31 +9,66 @@ import {
 	ImageBackground,
 	ScrollView,
 	FlatList,
+	ActivityIndicator,
 } from "react-native";
 import Colors from "../constants/ThemeColors";
 import HomeScreenCard from "../Components/HomeScreenCard";
 import {useSelector} from 'react-redux';
 import {PATIENTS} from "../Data/dummyData";
+import * as AppointmentActions from '../store/actions/appointmentAction';
+import {useDispatch} from 'react-redux';
 
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
 
 
 const HomeScreen = (props) => {
 	const Appointments = useSelector(state => state.appointment.appointments);
+	const dispatch = useDispatch();
+	const [error , setError] = useState();
+	const [isLoading, setIsLoading] = useState(false);
+	
+	console.log(isLoading);
+	const getData = useCallback(async()=>{
+		setIsLoading(true)
+		try{
+			
+			const currentAppointments = await dispatch(AppointmentActions.FetchAppointments());
+			
+			// console.log(currentAppointments)
+		}catch (err){
+			setError(err.message);
+		}
+		setIsLoading(false)
+	}, [isLoading, dispatch]);
+
+	useEffect(()=>{
+		
+		getData();
+		
+	}, [dispatch]);
 	
 	const renderCard = (itemData) => {
-	
 		return (
 			<View style={styles.renderList}>
 				
 				<HomeScreenCard
-					name={itemData.item.name}
-					disease={itemData.item.prescription}
+					name={itemData.item.Name}
+					time={itemData.item.time}
 				/>
 
 			</View>
 		);
 	};
+
+	if (isLoading){
+			return (
+				 <View style={styles.LoadingContainer}>
+						<ActivityIndicator size="large"/>
+				 </View>
+
+				);
+		}
+
 	return (
 		<View style={styles.screen}>
 			<View style={styles.screenTop}>
@@ -51,40 +86,42 @@ const HomeScreen = (props) => {
 						onPress={() => {
 							props.navigation.navigate("appointments");
 						}}
-					>
+					>	
+					<View style={{marginRight:4, paddingBottom:4}}>
 						<MaterialCommunityIcons
 							name="account-clock"
-							size={45}
+							size={30}
 							color="white"
 						/>
+						</View>
 						<View style={{ marginTop: 0 }}>
-							<Text style={styles.Buttontext}></Text>
+							<Text style={styles.Buttontext}>Appointments</Text>
 						</View>
 					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.floatingButtons2}
-						activeOpacity={0.8}
-					>
-						<FontAwesome5
-							name="briefcase-medical"
-							size={40}
-							color="white"
-						/>
-						<View style={{ marginTop: 0 }}>
-							<Text style={styles.Buttontext}></Text>
-						</View>
-					</TouchableOpacity>
+					{/*// <TouchableOpacity
+					// 	style={styles.floatingButtons2}
+					// 	activeOpacity={0.8}
+					// >
+					// 	<FontAwesome5
+					// 		name="briefcase-medical"
+					// 		size={40}
+					// 		color="white"
+					// 	/>
+					// 	<View style={{ marginTop: 0 }}>
+					// 		<Text style={styles.Buttontext}></Text>
+					// 	</View>
+					// </TouchableOpacity>*/}
 					<TouchableOpacity
 						style={styles.floatingButtons3}
 						activeOpacity={0.8}
 					>
 						<FontAwesome5
 							name="money-check"
-							size={39}
+							size={26}
 							color="white"
 						/>
 						<View style={{ marginTop: 0 }}>
-							<Text style={styles.Buttontext}></Text>
+							<Text style={styles.Buttontext}>Invoices</Text>
 						</View>
 					</TouchableOpacity>
 				</View>
@@ -107,7 +144,7 @@ const HomeScreen = (props) => {
 							size={35}
 							color="white"
 						/>
-							<Text style={{fontSize:19, color:'white'}}>Rs.11,000 </Text>
+							<Text style={{fontSize:19, color:'white'}}>Rs. {Appointments.length*1000} </Text>
 						</View>
 
 						
@@ -118,7 +155,7 @@ const HomeScreen = (props) => {
 				
 				<View style={{flex:1}}>
 				<FlatList 
-						data={PATIENTS} 
+						data={Appointments} 
 						renderItem={renderCard}  
 						ListEmptyComponent={()=>{
 							return (
@@ -128,7 +165,7 @@ const HomeScreen = (props) => {
 								);
 						}}
 						showsVerticalScrollIndicator={false}
-						sty
+
 				/>
 				
 				</View>
@@ -173,17 +210,20 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	floatingButtons1: {
-		width: 80,
+		width: 160,
 		height: 80,
-		justifyContent: "center",
-
+		flexDirection:'row',
+		justifyContent: "space-around",
+		paddingLeft:10,
+		paddingRight:10,
+		paddingBottom:10,
 		alignItems: "center",
 		borderRadius: 50,
 		paddingTop:8,
 		backgroundColor: Colors.PurpleButton,
 	},
 	floatingButtons2: {
-		width: 80,
+		width: 150,
 		height: 80,
 		justifyContent: "center",
 		marginLeft: 25,
@@ -193,18 +233,21 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.RedButton,
 	},
 	floatingButtons3: {
-		width: 80,
+		width: 160,
 		height: 80,
-		justifyContent: "center",
-		marginLeft: 25,
+		flexDirection:'row',
+		justifyContent: "space-around",
+		paddingLeft:10,
+		paddingRight:10,
+		paddingBottom:10,
 		alignItems: "center",
 		borderRadius: 50,
-		paddingTop:10,
+		paddingTop:8,
 		backgroundColor: Colors.GreenButton,
 	},
 	Buttontext: {
-		fontSize: 12,
-		fontWeight: "400",
+		fontSize: 14,
+		// fontWeight: "400",
 		color: "white",
 	},
 	ButtonsContainer: {
@@ -247,7 +290,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		borderRadius: 10,
 		paddingTop:10,
-		backgroundColor:Colors.MedBlue,
+		backgroundColor:Colors.BackgroundBlue,
 		
 		justifyContent:'space-around'
 
@@ -259,12 +302,17 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		paddingTop:10,
 
-		backgroundColor:Colors.MedBlue,
+		backgroundColor:Colors.BackgroundBlue,
 		marginLeft:50,
 		justifyContent:'space-around'
 	},
 	iconContainer:{
 		marginBottom:2,
+	},
+	LoadingContainer:{
+		flex:1,
+		justifyContent:'center',
+		alignItems:'center'
 	},
 });
 

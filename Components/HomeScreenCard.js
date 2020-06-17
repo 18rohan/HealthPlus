@@ -13,7 +13,7 @@ const HomeScreenCard = (props) => {
 	{/* Bottom Section of the Card */}
 			<View style={styles.cardBottom}>
 			<View style={styles.textContainer}>
-				<Text style={styles.textBottom}> {props.disease} </Text>
+				<Text style={styles.textBottom}> {props.time} </Text>
 				</View>
 				<View style={styles.iconContainer}>
 					<MaterialCommunityIcons

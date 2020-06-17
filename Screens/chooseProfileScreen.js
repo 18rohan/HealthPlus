@@ -23,14 +23,14 @@ const ProfileScreen = (props) => {
 						style={styles.TopButton}
 						onPress={() => {
 							return props.navigation.navigate({
-								routeName: "auth",
+								routeName: "login",
 								params: {
 									userTitle: "doctor",
 								},
 							});
 						}}
 					>
-					<Image source ={{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Male_Doctor_Flat_Icon_Vector.svg/1200px-Male_Doctor_Flat_Icon_Vector.svg.png'}} style={styles.Buttonimage} />
+					
 						<Text style={styles.buttonText}> Doctor</Text>
 					</TouchableOpacity>
 				</View>
@@ -38,10 +38,10 @@ const ProfileScreen = (props) => {
 					<TouchableOpacity
 						style={styles.BottomButton}
 						onPress={() => {
-							props.navigation.navigate("auth");
+							props.navigation.navigate("login");
 						}}
 					>
-					<Image source ={require('../assets/images/patient.png')} style={styles.Buttonimage2} />
+					
 						<Text style={styles.buttonText}> Patient</Text>
 					</TouchableOpacity>
 				</View>
@@ -75,32 +75,35 @@ const styles = StyleSheet.create({
 	TopButton: {
 		width: 180,
 		height: 250,
-		backgroundColor: Colors.MedBlue,
+		backgroundColor: Colors.BackgroundBlue,
 		justifyContent: "space-around",
-		alignItems: "center",
-
+		paddingLeft:10,
+		// alignItems: "center",
+		elevation:12,
 		borderRadius: 20,
-		shadowColor: Colors.MedBlue,
-		shadowOffset: { width: 4, height: 4 },
+		shadowColor: Colors.BackgroundBlue,
+		shadowOffset: { width: 7, height: 10 },
 		shadowOpacity: 0.7,
 		shadowRadius: 9,
+
 	},
 	BottomButton: {
 		width: 180,
 		height: 250,
-		backgroundColor: Colors.MedBlue,
+		backgroundColor: '#035aa6',
 		justifyContent: "center",
-		alignItems: "center",
-
+		// alignItems: "center",
+		paddingLeft:6,
+		elevation:12,
 		borderRadius: 20,
-		shadowColor: Colors.MedBlue,
-		shadowOffset: { width: 4, height: 4 },
+		shadowColor: '#035aa6',
+		shadowOffset: { width: 4, height: 10 },
 		shadowOpacity: 0.7,
 		shadowRadius: 9,
 	},
 	buttonText: {
 		fontSize: 45,
-		fontWeight: "200",
+		fontWeight: "bold",
 		color: "white",
 	},
 	image: {

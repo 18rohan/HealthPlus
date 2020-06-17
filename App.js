@@ -5,12 +5,14 @@ import ClinicNavigator from './Navigation/MainNavigator';
 import {Provider} from 'react-redux';
 import {combineReducers, createStore, applyMiddleware} from 'redux';
 import AppointmentReducer from './store/reducers/appointmentReducer';
+import AuthReducer from './store/reducers/AuthReducer';
 import ReduxThunk from 'redux-thunk';
 
 
 
 const rootReducer = combineReducers({
   appointment:AppointmentReducer,
+  auth:AuthReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); 

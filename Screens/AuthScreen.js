@@ -19,14 +19,17 @@ import {
 	Image,
 	TextInput,
 	ImageBackground,
-	
+	SafeAreaView,
 	Alert,
+
 } from "react-native";
 import Colors from "../constants/ThemeColors";
 import Input from "../Components/input";
 import { useDispatch } from "react-redux";
 import * as AppointmentActions from "../store/actions/appointmentAction";
 import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
+import * as AuthActions from '../store/actions/AuthActions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -34,18 +37,41 @@ import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 
 const AuthScreen = (props) => {
 
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const [signup, setSignup] = useState(false);
+	const dispatch = useDispatch();
 
+	// const storeData = async () =>{
+	// 	try{
+	// 		await AsyncStorage.setItem()
+	// 	}
+	// };
+	
+	const signinHandler = async()=>{
+		try{
+			await dispatch(AuthActions.Login(email,password));
+			props.navigation.navigate('home');
+
+		}catch(err){
+			setError(err.message);
+		}
+	}
 	const Usertitle = props.navigation.getParam('userTitle')
-
+	if(error){
+		Alert.alert('There was an error',error,[{text:'okay'}]);
+	}
 
 	return (
-
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+		
 		<View style={{ flex: 1, }}>
+		
 			<View style={styles.screenTop}>
 				<View style={styles.GreetingsContainer}>
 					<Text style={styles.Titletext}>
-					{Usertitle === 'doctor' ? 'Doctor login' : 'Patient login'}
+					{Usertitle === 'doctor' ? 'Doctor' : 'Patient'}  
+					{signup ? ' Sign Up' : ' Sign In'}
 					</Text>
 
 				</View>
@@ -56,53 +82,65 @@ const AuthScreen = (props) => {
 				</TouchableOpacity>
 				
 			</View>
-
-			<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}
+<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}
 				style={{flex: 1}}
-				keyboardVerticalOffset={100}
+				keyboardVerticalOffset={10}
 				>
-			<View >
+
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>		
+			
+			<ScrollView style={styles.screenBottom} >
 				<View style={styles.loginForm}>
 					<View style={styles.UsernameContainer}>
 					<View style={styles.iconContainer}>
 						<EvilIcons name="user" size={35} color={Colors.RedButton} />
 						</View>
 						<Input 
-							label="Username" 
-							placeholder="Enter username"
+							label="Email" 
+							placeholder="Enter email id"
+							
 							returnKeyType="next"
+							value = {email}
+							autoCapitalize='none'
+							onChange={text =>setEmail(text)}
 						/>
 					</View>
 					<View style={styles.PasswordContainer}>
-						<View style={styles.iconContainer}>
-						<EvilIcons name="lock" size={38} color={Colors.RedButton} />
+					<View style={styles.iconContainer}>
+						<EvilIcons name="lock" size={35} color={Colors.RedButton} />
 						</View>
 						<Input 
 							label="Password" 
-							placeholder="Enter password"
+							placeholder="Enter your password"
 							secureTextEntry
-							selectTextOnFocus
+							returnKeyType="next"
+							value = {password}
+							autoCapitalize='none'
+							onChange={text =>setPassword(text)}
 						/>
-				</View>
-				<TouchableOpacity style={styles.LoginButton} >
+					</View>
+				
+				<TouchableOpacity style={styles.LoginButton} onPress={signinHandler} >
 				<Text style={styles.buttonText}>LOGIN</Text>
 
 				</TouchableOpacity>
 				<View style={{marginTop:20, flexDirection: 'row'}}>
 				<Text style={{color:Colors.RedButton, fontSize:17}}> Don't have an account?</Text>
 				<TouchableWithoutFeedback onPress={()=>{
-					props.navigation.navigate('signup');
+					props.navigation.navigate('signup')
 				}}>
 				<Text style={{color:Colors.BackgroundBlue, fontSize:17}}> Sign Up</Text>
 				</TouchableWithoutFeedback>
 				</View>
 				</View>
-			</View>
-			</KeyboardAvoidingView>
+			</ScrollView>
+			</TouchableWithoutFeedback>	
+		</KeyboardAvoidingView>
 			
+			
+		
 		</View>
-		</TouchableWithoutFeedback>
-			
+		
 	);
 };
 
@@ -110,22 +148,25 @@ const styles = StyleSheet.create({
 	screenTop: {
 		alignItems: "center",
 		justifyContent: "center",
-		width: 420,
-		height: 350,
+		width: '100%',
+		
+		height: Platform.OS === "ios" ? 350 : 300,
 
-		backgroundColor: Colors.MedBlue,
+		backgroundColor:Platform.OS === 'ios' ? Colors.MedBlue : Colors.BackgroundBlue,
 	},
 	ScrollView: {
 		flex: 2,
 		width: "100%",
-		backgroundColor: Colors.HomeScreenText,
+		
+		backgroundColor: Colors.homeScreenText,
 		marginBottom:10,
 	},
 	screenBottom: {
 		flex: 2,
-
-		justifyContent: "center",
-		alignItems: "center",
+		backgroundColor: Colors.homeScreenText,
+		borderRadius:40,
+		// justifyContent: "center",
+		// alignItems: "center",
 	},
 	text: {
 		fontSize: 25,
@@ -134,18 +175,19 @@ const styles = StyleSheet.create({
 	},
 	Titletext: {
 		fontSize: 50,
-		fontWeight: "100",
+		fontWeight: "200",
 		color: Colors.HomeScreenText,
 	},
 	GreetingsContainer: {
 		justifyContent: "center",
-		alignItems: "center",
+		// alignItems: "center",
+		marginLeft:Platform.OS === "ios" ? 70 : 30,
 		width:350,
 		height:100,
 		
 	},
 	loginForm: {
-		width:400,
+		width:Platform.OS === "ios" ? 400 : '100%',
 		height:400,
 		alignItems: "center",
 		justifyContent: "center"
@@ -164,6 +206,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width:300,
 		height:50,
+
 		marginBottom:20,
 		// justifyContent: "center",
 		alignItems: "center",
@@ -173,10 +216,11 @@ const styles = StyleSheet.create({
 	LoginButton: {
 		width:320,
 		height:50,
-		backgroundColor:Colors.MedBlue,
+		backgroundColor:Platform.OS === 'ios' ? Colors.MedBlue : Colors.BackgroundBlue,
 		justifyContent: "center",
-		alignItems: "center",
+		// alignItems: "center",
 		// marginLeft:120,
+		paddingLeft:Platform.OS === "android" ? 120 : 130,
 		marginTop:40,
 		borderRadius:35,
 
@@ -187,7 +231,7 @@ const styles = StyleSheet.create({
 		fontWeight:'200',
 	},
 	iconContainer: {
-		width:40,
+		width:30,
 		height:60,
 		justifyContent: "flex-end",
 	},

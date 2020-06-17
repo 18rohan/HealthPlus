@@ -1,4 +1,4 @@
-import {CREATE_APPOINTMENT} from '../actions/appointmentAction';
+import {CREATE_APPOINTMENT, FETCH_APPOINTMENTS} from '../actions/appointmentAction';
 import Appointment from '../../Models/Appointment';
 import {APPOINTMENTS} from '../../Data/dummyData';
 
@@ -12,6 +12,8 @@ const initialState = {
 
 const AppointmentReducer = (state = initialState, action) =>{
 	switch (action.type) {
+		case FETCH_APPOINTMENTS:
+			return {appointments : action.appointments};
 		case CREATE_APPOINTMENT:
 			const NewAppointment = new Appointment(
 													new Date().toString(),
@@ -21,7 +23,7 @@ const AppointmentReducer = (state = initialState, action) =>{
 													action.appointmentData.date,
 													action.appointmentData.time,
 													action.appointmentData.fees,
-
+													action.appointmentData.patientId
 												 )
 			return {
 				...state,

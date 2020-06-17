@@ -26,6 +26,8 @@ import Colors from "../constants/ThemeColors";
 import Input from "../Components/input";
 import { useDispatch } from "react-redux";
 import * as AppointmentActions from "../store/actions/appointmentAction";
+import * as AuthActions from '../store/actions/AuthActions';
+
 import { EvilIcons } from '@expo/vector-icons';
 
 
@@ -33,10 +35,29 @@ import { EvilIcons } from '@expo/vector-icons';
 
 
 const SignUpScreen = (props) => {
+	
+	// const [name, setName] = useState('');
+	// const [contact, setContact] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const [signup, setSignup] = useState(false);
+	
+	const signupHandler = async()=>{
+		try{
+			await dispatch(AuthActions.SignUp(email,password));
+			props.navigation.navigate('auth');
+		}catch(err){
+			setError(err.message);
+		}
+	}
 
 
+	const dispatch = useDispatch();
 	const Usertitle = props.navigation.getParam('userTitle')
-
+	if (error){
+		Alert.alert('Error in Form',error,[{text:'okay'}]);
+	}
 
 	return (
 
@@ -52,20 +73,26 @@ const SignUpScreen = (props) => {
 				
 			</View>
 
+						
 			<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}
 				style={{flex: 1}}
-				keyboardVerticalOffset={100}
+				keyboardVerticalOffset={0}
 				>
+				
 			<View >
+			
 				<View style={styles.loginForm}>
+				
 				<View style={styles.UsernameContainer}>
 					<View style={styles.iconContainer}>
 						<EvilIcons name="user" size={35} color={Colors.RedButton} />
 						</View>
 						<Input 
-							label="Username" 
-							placeholder="Enter username"
+							label="Name" 
+							placeholder="Enter your name"
 							returnKeyType="next"
+							// value ={name}
+							// onChange={text =>setName(text)}
 						/>
 					</View>
 
@@ -76,10 +103,29 @@ const SignUpScreen = (props) => {
 						</View>
 						<Input 
 							label="Phone Number" 
-							placeholder="Enter username"
+							placeholder="Enter Phone Number"
 							returnKeyType="next"
+							// value={contact}
+							keyboard = 'phone-pad'
+							// onChange={text =>setContact(text)}
 						/>
 					</View>
+					<View style={styles.UsernameContainer}>
+					<View style={styles.iconContainer}>
+						<EvilIcons name="user" size={35} color={Colors.RedButton} />
+						</View>
+						<Input 
+							label="Email" 
+							placeholder="Enter Email id"
+							returnKeyType="next"
+							value={email}
+							keyboard='email-address'
+							onChange={text =>setEmail(text)}
+						/>
+					</View>
+						
+					
+				
 					<View style={styles.PasswordContainer}>
 						<View style={styles.iconContainer}>
 						<EvilIcons name="lock" size={38} color={Colors.RedButton} />
@@ -88,10 +134,12 @@ const SignUpScreen = (props) => {
 							label="Password" 
 							placeholder="Enter password"
 							secureTextEntry
+							value={password}
+							onChange={text => setPassword(text)}
 							selectTextOnFocus
 						/>
 				</View>
-				<TouchableOpacity style={styles.LoginButton} >
+				<TouchableOpacity style={styles.LoginButton} onPress={signupHandler} >
 				<Text style={styles.buttonText}>SIGN UP</Text>
 
 				</TouchableOpacity>
@@ -99,13 +147,18 @@ const SignUpScreen = (props) => {
 				<Text style={{color:Colors.RedButton, fontSize:17}}>Already have an Account?</Text>
 				<TouchableWithoutFeedback onPress={()=>{
 					props.navigation.navigate('auth');
+
 				}}>
 				<Text style={{color:Colors.BackgroundBlue, fontSize:17}}> Sign In</Text>
 				</TouchableWithoutFeedback>
 				</View>
+
 				</View>
 			</View>
+			
 			</KeyboardAvoidingView>
+			
+			
 			
 		</View>
 		</TouchableWithoutFeedback>
@@ -116,11 +169,13 @@ const SignUpScreen = (props) => {
 const styles = StyleSheet.create({
 	screenTop: {
 		alignItems: "center",
-		justifyContent: "center",
-		width: 420,
-		height: 350,
-
-		backgroundColor: Colors.MedBlue,
+		justifyContent: "flex-end",
+		width: 380,
+		height: 150,
+		marginLeft:17,
+		borderBottomWidth:0.5,
+		borderColor: Colors.BackgroundBlue
+		// backgroundColor: Colors.MedBlue,
 	},
 	ScrollView: {
 		flex: 2,
@@ -142,18 +197,18 @@ const styles = StyleSheet.create({
 	Titletext: {
 		fontSize: 50,
 		fontWeight: "100",
-		color: Colors.HomeScreenText,
+		color: Colors.BackgroundBlue,
 	},
 	GreetingsContainer: {
 		justifyContent: "center",
 		alignItems: "center",
 		width:350,
-		height:150,
+		height:100,
 		
 	},
 	loginForm: {
 		width:400,
-		height:400,
+		height:500,
 		alignItems: "center",
 		justifyContent: "center"
 	},
