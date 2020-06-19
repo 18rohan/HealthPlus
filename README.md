@@ -8,7 +8,7 @@ Clinic Management Application in React Native based app for appointments managem
 - Redux for state management
 
 
-<img src="ShopStop_SCREENSHOTS/authScreen.png" width="200"> <img src="ShopStop_SCREENSHOTS/homeScreen.png" width="200"> <img src="ShopStop_SCREENSHOTS/cart.png" width="200">  
+<img src="images/Simulator Screen Shot - iPhone 11 - 2020-06-13 at 16.34.55.png" width="200"> <img src="images/Simulator Screen Shot - iPhone 11 - 2020-06-13 at 16.35.03.png" width="200"> <img src="images/Simulator Screen Shot - iPhone 11 - 2020-06-13 at 16.35.26.png" width="200">  
 
 
 
