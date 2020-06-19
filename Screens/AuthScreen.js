@@ -112,7 +112,7 @@ const AuthScreen = (props) => {
 						<Input 
 							label="Password" 
 							placeholder="Enter your password"
-							secureTextEntry
+							secureTextEntry 
 							returnKeyType="next"
 							value = {password}
 							autoCapitalize='none'

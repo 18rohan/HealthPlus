@@ -39,6 +39,7 @@ const SignUpScreen = (props) => {
 	// const [name, setName] = useState('');
 	// const [contact, setContact] = useState('');
 	const [email, setEmail] = useState('');
+	const [displayName, setDisplayName] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [signup, setSignup] = useState(false);
