@@ -13,27 +13,52 @@ import {
 } from "react-native";
 import Colors from "../constants/ThemeColors";
 import HomeScreenCard from "../Components/HomeScreenCard";
-import {useSelector} from 'react-redux';
+
 import {PATIENTS} from "../Data/dummyData";
 import * as AppointmentActions from '../store/actions/appointmentAction';
-import {useDispatch} from 'react-redux';
+import * as PatientActions from '../store/actions/PatientAction';
+import {useDispatch, useSelector} from 'react-redux';
 
 import { MaterialCommunityIcons, FontAwesome5, FontAwesome } from "@expo/vector-icons";
 
 
 const HomeScreen = (props) => {
 	const Appointments = useSelector(state => state.appointment.appointments);
+	// const PatientName = useSelector(state => state.patient.patients.name);
+	
+	// console.log(PatientName);
 	const dispatch = useDispatch();
 	const [error , setError] = useState();
 	const [isLoading, setIsLoading] = useState(false);
 	
-	console.log(isLoading);
+	// const userId = useSelector(state => state.auth.userId);
+	// const data = useSelector(state => state.patient.find(id => patient.id == userId))
+	// console.log("Patient Name")
+	// console.log(Appointments);
+	// console.log(userId)
+	const stateSnap = useSelector(state => state)
+	console.log("THIS IS THE STATE SNAP");
+	console.log(stateSnap)
+
+
+	
+	// console.log(isLoading);
+	const getPatients = useCallback(async()=>{
+		setIsLoading(true)
+		try{
+			const patientData = await dispatch(PatientActions.fetchPatient());
+		}catch (err) {
+			setError(erro.message)
+		}
+		setIsLoading(false)
+	},[isLoading, dispatch])
+
 	const getData = useCallback(async()=>{
 		setIsLoading(true)
 		try{
 			
 			const currentAppointments = await dispatch(AppointmentActions.FetchAppointments());
-			
+			// console.log("currentAppointments");
 			// console.log(currentAppointments)
 		}catch (err){
 			setError(err.message);
@@ -42,7 +67,7 @@ const HomeScreen = (props) => {
 	}, [isLoading, dispatch]);
 
 	useEffect(()=>{
-		
+		getPatients();
 		getData();
 		
 	}, [dispatch]);
@@ -137,7 +162,12 @@ const HomeScreen = (props) => {
 							<Text style={{fontSize:20, color:'white'}}>{Appointments.length} Patients </Text>
 						
 						</TouchableOpacity>
-						<View style={styles.TotalCollection}>
+						<TouchableOpacity style={styles.TotalCollection} onPress={() =>{
+							const patients = dispatch(PatientActions.fetchPatient());
+							console.log(patients);
+							
+
+						}}>
 						
 							<FontAwesome5
 							name="money-check"
@@ -145,7 +175,7 @@ const HomeScreen = (props) => {
 							color="white"
 						/>
 							<Text style={{fontSize:19, color:'white'}}>Rs. {Appointments.length*1000} </Text>
-						</View>
+						</TouchableOpacity>
 
 						
 				</View>

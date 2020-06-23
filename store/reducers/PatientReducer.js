@@ -1,12 +1,17 @@
-import {CREATE_PATIENT} from '../actions/PatientAction';
+import {CREATE_PATIENT,FETCH_PATIENT} from '../actions/PatientAction';
 import Patient from '../../Models/patients';
 const initialState = {
-	patients = []
+	patients : []
 }
 
 
-const CreatePatientReducer = (state=intialState, action) =>{
+const PatientReducer = (state=initialState, action) =>{
 	switch (action.type){
+		case FETCH_PATIENT:
+			return {
+				...state,
+				patients:action.patientData
+			};
 		case CREATE_PATIENT:
 			const patient = new Patient(
 					action.patientData.id,
@@ -16,15 +21,18 @@ const CreatePatientReducer = (state=intialState, action) =>{
 					action.patientData.age,
 					action.patientData.gender,
 					action.patientData.prescription,
+					action.patientData.patientId
 
 				)
 			return {
 				...state,
 				patients:state.patients.concat(patient)
-			}
+			};
 		default:
-			return state
+			return state;
 	}
 }
 
-export const createPatientReducer 
+
+
+export default PatientReducer ;

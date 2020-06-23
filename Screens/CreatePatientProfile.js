@@ -65,6 +65,10 @@ const PatientProfile = (props) => {
 	const [error, setError] = useState(false);
 	const [toggleMaleCheckBox, setToggleMaleCheckBox] = useState(false);
 	const [toggleFeMaleCheckBox, setToggleFeMaleCheckBox] = useState(false);
+	// const PatientName = useSelector(state => state.)
+	const data = useSelector(state => state.patient);
+	console.log("State Snapshot")
+	console.log(data)
 	const PatientProfileData = useSelector(state => state.auth.email);
 	const userId = useSelector(state => state.auth.userId);
 	console.log("Patient Profile");

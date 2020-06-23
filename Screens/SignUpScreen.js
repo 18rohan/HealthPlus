@@ -27,6 +27,7 @@ import Input from "../Components/input";
 import { useDispatch } from "react-redux";
 import * as AppointmentActions from "../store/actions/appointmentAction";
 import * as AuthActions from '../store/actions/AuthActions';
+import * as PatientActions from '../store/actions/PatientAction';
 
 import { EvilIcons } from '@expo/vector-icons';
 
@@ -36,8 +37,8 @@ import { EvilIcons } from '@expo/vector-icons';
 
 const SignUpScreen = (props) => {
 	
-	// const [name, setName] = useState('');
-	// const [contact, setContact] = useState('');
+	const [name, setName] = useState('');
+	const [contact, setContact] = useState('');
 	const [email, setEmail] = useState('');
 	const [displayName, setDisplayName] = useState('');
 	const [password, setPassword] = useState('');
@@ -47,6 +48,7 @@ const SignUpScreen = (props) => {
 	const signupHandler = async()=>{
 		try{
 			await dispatch(AuthActions.SignUp(email,password));
+			await dispatch(PatientActions.CreatePatient(name,email,contact))
 			props.navigation.navigate('auth');
 		}catch(err){
 			setError(err.message);
@@ -92,8 +94,8 @@ const SignUpScreen = (props) => {
 							label="Name" 
 							placeholder="Enter your name"
 							returnKeyType="next"
-							// value ={name}
-							// onChange={text =>setName(text)}
+							value ={name}
+							onChange={text =>setName(text)}
 						/>
 					</View>
 
@@ -106,11 +108,12 @@ const SignUpScreen = (props) => {
 							label="Phone Number" 
 							placeholder="Enter Phone Number"
 							returnKeyType="next"
-							// value={contact}
+							value={contact}
 							keyboard = 'phone-pad'
-							// onChange={text =>setContact(text)}
+							onChange={text =>setContact(text)}
 						/>
 					</View>
+					
 					<View style={styles.UsernameContainer}>
 					<View style={styles.iconContainer}>
 						<EvilIcons name="user" size={35} color={Colors.RedButton} />

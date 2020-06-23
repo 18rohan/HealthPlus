@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import {combineReducers, createStore, applyMiddleware} from 'redux';
 import AppointmentReducer from './store/reducers/appointmentReducer';
 import AuthReducer from './store/reducers/AuthReducer';
+import PatientReducer from './store/reducers/PatientReducer';
 import ReduxThunk from 'redux-thunk';
 
 
@@ -13,6 +14,7 @@ import ReduxThunk from 'redux-thunk';
 const rootReducer = combineReducers({
   appointment:AppointmentReducer,
   auth:AuthReducer,
+  patient:PatientReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk)); 
