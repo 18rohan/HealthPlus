@@ -71,6 +71,11 @@ const PatientProfile = (props) => {
 	console.log(data)
 	const PatientProfileData = useSelector(state => state.auth.email);
 	const userId = useSelector(state => state.auth.userId);
+	const UserProfile = useSelector(state => state.patient.patients)
+	console.log("USER PROFILE")
+	console.log(UserProfile)
+	// const editedProduct = useSelector(state => state.products.userProducts.find(prod => prod.id  === prodId));
+	// const userId = useSelector(state => state.auth.userId);
 	console.log("Patient Profile");
 	// console.log(PatientProfileData);
 	let gender_data;
@@ -80,21 +85,21 @@ const PatientProfile = (props) => {
 	// Initial States of the Form
 	const [formState, formStateDispatch] = useReducer(FormReducer, {
 		inputValues: {
-			name: "",
+			name:UserProfile ? UserProfile.name : "",
 			email: PatientProfileData,
-			contact: "",
-			age: "",
+			contact:UserProfile ? UserProfile.contact : "",
+			age: UserProfile ? UserProfile.age : "",
 			gender: "male",
-			prescription: "",
+			prescription: UserProfile ? UserProfile.prescription :"",
 		},
 		inputValidities: {
-			name: false,
-			email: true,
-			contact: false,
+			name: UserProfile ? true : false,
+			email:  true,
+			contact: UserProfile ? true : false,
 
-			age: false,
-			gender: true,
-			prescription: false,
+			age: UserProfile ? true : false,
+			gender:  true,
+			prescription: UserProfile ? true : false,
 		},
 		formValidity: false,
 	});
@@ -119,14 +124,15 @@ const PatientProfile = (props) => {
 		setError(null);
 		try {
 			await dispatch(
-				PatientActions.CreatePatient(
+				PatientActions.UpdatePatient(
 					userId,
 					formState.inputValues.name,	
 					PatientProfileData,			
 					formState.inputValues.contact,
 					formState.inputValues.age,
 					formState.inputValues.gender,
-					formState.inputValues.prescription,		
+					formState.inputValues.prescription,	
+					
 					
 				)
 			);
@@ -170,6 +176,7 @@ const PatientProfile = (props) => {
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false}>
 						<View>
+
 							<Input
 								placeholder="Enter Name"
 								label="Name"

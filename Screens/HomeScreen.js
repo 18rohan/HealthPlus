@@ -24,8 +24,10 @@ import { MaterialCommunityIcons, FontAwesome5, FontAwesome } from "@expo/vector-
 
 const HomeScreen = (props) => {
 	const Appointments = useSelector(state => state.appointment.appointments);
-	// const PatientName = useSelector(state => state.patient.patients.name);
 	
+	const PatientName = useSelector(state => state.patient.patients.name);
+	
+	console.log("PATIENT NAME");
 	// console.log(PatientName);
 	const dispatch = useDispatch();
 	const [error , setError] = useState();
@@ -98,8 +100,8 @@ const HomeScreen = (props) => {
 		<View style={styles.screen}>
 			<View style={styles.screenTop}>
 				<View style={styles.GreetingsContainer}>
-					<Text style={styles.Titletext}>Good Morning, </Text>
-					<Text style={styles.Titletext}>Rohan</Text>
+					<Text style={styles.Titletext}>Hello, {PatientName} </Text>
+					<Text style={styles.Titletext}></Text>
 				</View>
 
 		
@@ -230,8 +232,8 @@ const styles = StyleSheet.create({
 		color: Colors.HomeScreenText,
 	},
 	Titletext: {
-		fontSize: 35,
-		fontWeight: "300",
+		fontSize: 40,
+		fontWeight: "400",
 		color: Colors.HomeScreenText,
 	},
 	GreetingsContainer: {

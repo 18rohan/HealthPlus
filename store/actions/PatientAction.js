@@ -1,6 +1,8 @@
 import Patient from '../../Models/patients';
 export const CREATE_PATIENT = "CREATE_PATIENT";
 export const FETCH_PATIENT  = "FETCH_PATIENT";
+export const DELETE_PATIENT = "DELETE_PATIENT";
+export const UPDATE_PATIENT = "UPDATE_PATIENT";
 
 export const fetchPatient = (id,name,email,contact,age,gender,prescription)=>{
 	return async (dispatch,getState) =>{
@@ -51,10 +53,41 @@ export const deletePatient = (id) =>{
 
 	};
 	dispatch({
-		type: 'DELETE',
+		type: 'DELETE_PATIENT',
 		patientId:id
 	})
 };
+export const UpdatePatient = (id,name,email, contact, age, gender,prescription )=>{
+	return async(dispatch, getState)=>{
+		const token = getState().auth.token;
+		const userId = getState().auth.userId;
+		try{
+			const response = await fetch(`https://healthplus-2b9b0.firebaseio.com/patients/${id}.json?auth=${token}`,{
+				method:'PATCH',
+				headers:{'Content-Type': 'application/json'},
+				body: JSON.stringify({
+					name,
+					contact,
+					prescription
+
+				})
+			});
+			if (!response.ok){
+				throw new Error('Something went wrong');
+			}
+			dispatch({
+				type: 'UPDATE_PATIENT',
+				patientId:userId,
+				name,
+				contact, 
+				prescription
+			})
+		}catch (err) {
+			throw err;
+		}
+
+	}
+}
 export const CreatePatient = (id, name, email,contact,age,gender,prescription)=>{
 	return async (dispatch,getState) => {
 		const token = getState().auth.token;
