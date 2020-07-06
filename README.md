@@ -39,3 +39,15 @@ expo ios/android
 ### OR
 Press **I** for ios emulator, or **A** for android emulator in the terminal, when the expo server is up and running.
 
+
+## Running it Online on GitPod
+### 1.On this repository page change the url, by adding 'gitpod.io/#' before 'https'
+```
+https://gitpod.io/#https://github.com/18rohan/HealthPlus
+```
+### 2. Open the Gitpod IDE, and in the Gitpod terminal run the following commands:
+```
+npm install
+npm start
+```
+### 3. npm start would install and start the expo cli. Then press 'w' to start the app simulation in web.
